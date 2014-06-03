@@ -22,50 +22,50 @@ class PluginOrder extends ServicePlugin
     function getVariables()
     {
         $variables = array(
-            /*T*/'Plugin Name'/*/T*/   => array(
+            lang('Plugin Name')   => array(
                 'type'          => 'hidden',
-                'description'   => /*T*/''/*/T*/,
-                'value'         => /*T*/'Order Processor'/*/T*/,
+                'description'   => '',
+                'value'         => lang('Order Processor'),
             ),
-            /*T*/'Enabled'/*/T*/       => array(
+            lang('Enabled')       => array(
                 'type'          => 'yesno',
-                'description'   => /*T*/'When enabled, new orders will be activated and processed when this service is run.  Please note that manually added packages will not be processed.'/*/T*/,
+                'description'   => lang('When enabled, new orders will be activated and processed when this service is run.  Please note that manually added packages will not be processed.'),
                 'value'         => '0',
             ),
-            /*T*/'E-mail Notifications'/*/T*/       => array(
+            lang('E-mail Notifications')       => array(
                 'type'          => 'textarea',
-                'description'   => /*T*/'When a domain requires manual registration or transfer, or an account requires manual setup you will be notified at this E-mail address.'/*/T*/,
+                'description'   => lang('When a domain requires manual registration or transfer, or an account requires manual setup you will be notified at this E-mail address.'),
                 'value'         => '',
             ),
-            /*T*/'Activate Cancelled Users'/*/T*/       => array(
+            lang('Activate Cancelled Users')       => array(
                 'type'          => 'yesno',
-                'description'   => /*T*/'When enabled, new orders from cancelled customers will also be activated.'/*/T*/,
+                'description'   => lang('When enabled, new orders from cancelled customers will also be activated.'),
                 'value'         => '0',
             ),
-            /*T*/'Run schedule - Minute'/*/T*/  => array(
+            lang('Run schedule - Minute')  => array(
                 'type'          => 'text',
-                'description'   => /*T*/'Enter number, range, list or steps'/*/T*/,
+                'description'   => lang('Enter number, range, list or steps'),
                 'value'         => '30',
                 'helpid'        => '8',
             ),
-            /*T*/'Run schedule - Hour'/*/T*/  => array(
+            lang('Run schedule - Hour')  => array(
                 'type'          => 'text',
-                'description'   => /*T*/'Enter number, range, list or steps'/*/T*/,
+                'description'   => lang('Enter number, range, list or steps'),
                 'value'         => '*',
             ),
-            /*T*/'Run schedule - Day'/*/T*/  => array(
+            lang('Run schedule - Day')  => array(
                 'type'          => 'text',
-                'description'   => /*T*/'Enter number, range, list or steps'/*/T*/,
+                'description'   => lang('Enter number, range, list or steps'),
                 'value'         => '*',
             ),
-            /*T*/'Run schedule - Month'/*/T*/  => array(
+            lang('Run schedule - Month')  => array(
                 'type'          => 'text',
-                'description'   => /*T*/'Enter number, range, list or steps'/*/T*/,
+                'description'   => lang('Enter number, range, list or steps'),
                 'value'         => '*',
             ),
-            /*T*/'Run schedule - Day of the week'/*/T*/  => array(
+            lang('Run schedule - Day of the week')  => array(
                 'type'          => 'text',
-                'description'   => /*T*/'Enter number in range 0-6 (0 is Sunday) or a 3 letter shortcut (e.g. sun)'/*/T*/,
+                'description'   => lang('Enter number in range 0-6 (0 is Sunday) or a 3 letter shortcut (e.g. sun)'),
                 'value'         => '*',
             ),
         );
