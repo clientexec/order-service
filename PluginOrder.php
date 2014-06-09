@@ -82,6 +82,12 @@ class PluginOrder extends ServicePlugin
      */
     function execute()
     {
+        include_once 'modules/admin/models/StatusAliasGateway.php' ;
+
+        $statusGateway = StatusAliasGateway::getInstance($this->user);
+        $statusPending = $statusGateway->getUserStatusIdsFor(USER_STATUS_PENDING);
+        $statusCancelled = $statusGateway->getUserStatusIdsFor(USER_STATUS_CANCELLED);
+        $statusActive = $statusGateway->getUserStatusIdsFor(USER_STATUS_ACTIVE);
         $messages = array();
         $numOrdersProcessed = 0;
         // We'll select all packages that allow automatic activation
@@ -98,7 +104,7 @@ class PluginOrder extends ServicePlugin
             if ($domain->CustomerId == 0) continue; // prevents orphaned domains from creating many users
             $user = new User($domain->CustomerId);
             // Activate the user if pending or if they are cancelled and we are activating cancelled
-            if ( ($user->GetStatus() == USER_STATUS_PENDING && $domain->isPaid()) || ( $this->settings->get('plugin_order_Activate Cancelled Users') && $user->GetStatus() == USER_STATUS_CANCELLED && $domain->isPaid() ) ) {
+            if ( (in_array($user->GetStatus(), $statusPending) && $domain->isPaid()) || ( $this->settings->get('plugin_order_Activate Cancelled Users') && in_array($user->GetStatus(), $statusCancelled) && $domain->isPaid() ) ) {
                 $user->setStatus(USER_STATUS_ACTIVE);
                 $user->save();
             }
@@ -106,7 +112,7 @@ class PluginOrder extends ServicePlugin
             // Make sure that the domain is paid and user is active and the plan has domain options
             // Also, make sure that the plugin "Order Processor" is Enabled and thet the domain allows automatic activation,
             // or make sure that the plugin "Order Processor" is disabled, meaning this is a Manual Execution.
-            if($domain->isPaid() && $user->GetStatus() == USER_STATUS_ACTIVE) {
+            if($domain->isPaid() && in_array($user->GetStatus(), $statusActive)) {
                 $mailGateway = new NE_MailGateway();
                 $userPackageGateway = new UserPackageGateway($user);
                 if ( (($this->settings->get('plugin_order_Enabled') && isset($automaticactivation[$row['Plan']])) || (!$this->settings->get('plugin_order_Enabled')))) {
