@@ -97,7 +97,8 @@ class PluginOrder extends ServicePlugin
             $automaticactivation[$row['id']] = $row['id'];
         }
         // We'll select all domains that are pending and weren't manually added
-        $query = "SELECT id, Plan FROM domains WHERE status = 0 AND signup = 1";
+        $statusPackagePending = $statusGateway->getPackageStatusIdsFor(PACKAGE_STATUS_PENDING);
+        $query = "SELECT id, Plan FROM domains WHERE status IN (".implode(', ', $statusPackagePending).") AND signup = 1";
         $result = $this->db->query($query);
         while ($row = $result->fetch()) {
             $domain = new UserPackage($row['id'], array(), $this->user);
@@ -233,9 +234,10 @@ class PluginOrder extends ServicePlugin
 
     function dashboard()
     {
+        $statusPackagePending = $statusGateway->getPackageStatusIdsFor(PACKAGE_STATUS_PENDING);
         $query = "SELECT COUNT(id) AS orders "
                 ."FROM domains "
-                ."WHERE status = 0 "
+                ."WHERE status IN (".implode(', ', $statusPackagePending).") "
                 ."AND signup = 1 ";
         $result = $this->db->query($query);
         $row = $result->fetch();
@@ -248,7 +250,7 @@ class PluginOrder extends ServicePlugin
 
         $query = "SELECT COUNT(id) AS orders "
                 ."FROM domains "
-                ."WHERE status = 0 "
+                ."WHERE status IN (".implode(', ', $statusPackagePending).") "
                 ."AND signup = 2 ";
         $result = $this->db->query($query);
         $row = $result->fetch();
