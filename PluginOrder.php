@@ -111,9 +111,17 @@ class PluginOrder extends ServicePlugin
             }
 
             // Make sure that the domain is paid and user is active and the plan has domain options
-            // Also, make sure that the plugin "Order Processor" is Enabled and thet the domain allows automatic activation,
+            // Also, make sure the domain do not have all its invoices void
+            // Finally, make sure that the plugin "Order Processor" is Enabled and that the domain allows automatic activation,
             // or make sure that the plugin "Order Processor" is disabled, meaning this is a Manual Execution.
-            if($domain->isPaid() && in_array($user->GetStatus(), $statusActive)) {
+
+            //0 = HAS UNPAID, PARTIALLY PAID, OR PENDING INVOICES
+            //1 = HAS NO INVOICES
+            //2 = HAS INVOICES, AND NONE OF THEM IS UNPAID, PARTIALLY PAID, OR PENDING
+            //3 = HAS ALL INVOICES VOID
+            $domainIsPaid = $domain->isPaid();
+
+            if($domainIsPaid && $domainIsPaid != 3 && in_array($user->GetStatus(), $statusActive)) {
                 $mailGateway = new NE_MailGateway();
                 $userPackageGateway = new UserPackageGateway($user);
                 if ( (($this->settings->get('plugin_order_Enabled') && isset($automaticactivation[$row['Plan']])) || (!$this->settings->get('plugin_order_Enabled')))) {
